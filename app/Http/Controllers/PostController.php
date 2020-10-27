@@ -125,6 +125,13 @@ class PostController extends Controller
 
             $post->save();
         });
-        return response('success');
+        return response(null,204);
+    }
+
+    public function destroy(Post $post,Request $request){
+        $post=Post::find($request->id);
+        $this->authorize('destroy',$post);
+        $post->delete();
+        return response(null,204);   
     }
 }
