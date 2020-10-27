@@ -7,10 +7,10 @@ use App\Post;
 use Storage;
 use Str;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Requests\PostStoreRequest;
 class PostController extends Controller
 {
-    public function store(Request $request)
+    public function store(PostStoreRequest $request)
     {
         //get all
         $params = $request->json()->all();

@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
             $table->string('area');
             $table->integer('fee');
             $table->integer('count');
-            $table->text('message');
+            $table->text('message')->nullable();
             $table->integer('transport');
             $table->integer('start_hour');
             $table->integer('start_min');
