@@ -8,6 +8,8 @@ use Storage;
 use Str;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PostStoreRequest;
+use App\Http\Resources\Post as PostResourse;
+
 class PostController extends Controller
 {
     public function store(PostStoreRequest $request)
@@ -62,4 +64,9 @@ class PostController extends Controller
         });
         return response('success');
     } 
+    public function index()
+    {
+        $posts = Post::latestFirst()->paginate(5);
+        return PostResourse::collection($posts);
+    }
 }
