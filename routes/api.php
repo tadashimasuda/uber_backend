@@ -13,5 +13,8 @@ Route::group(['prefix'=>'posts'],function(){
     Route::get('/{id}','PostController@show');
     Route::put('/{id}','PostController@update')->middleware('auth:api');
     Route::delete('/{id}','PostController@destroy')->middleware('auth:api');
-
+    Route::group(['prefix'=>'/{id}/comment'],function(){
+        Route::post('/','CommentController@store')->middleware('auth:api');
+        // Route::delete('/{id}','CommentController@destroy')->middleware('auth:api');
+    });
 });

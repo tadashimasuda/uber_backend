@@ -3,8 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\Comment as CommentResorse;
-class Post extends JsonResource
+
+class Comment extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,15 +16,14 @@ class Post extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'id' => $this->id,
-            'img_path' => $this->img_path,
+            "id" => $this->id,
+            "comment" => $this->comment,
             'created_at' => $this->created_at->diffForHumans(),
             'user' =>[
                 'user_id'=>$this->user->id,
                 'username'=>$this->user->name,
                 'user_img_path'=>$this->user->img_path,
-            ],
-            'comments' => CommentResorse::collection($this->comment),
+            ]
         ];
     }
 }
