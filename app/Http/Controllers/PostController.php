@@ -74,6 +74,9 @@ class PostController extends Controller
     }
 
     public function update(PostStoreRequest $request){
+        $post = Post::find($request->id);
+        $this->authorize('update',$post);
+
         //get all
         $params = $request->json()->all();
 
@@ -93,13 +96,14 @@ class PostController extends Controller
         $end_hour = $params['end_hour'];
         $end_min = $params['end_min'];
 
-        DB::transaction(function () use ($decodedImage, $id, $message, $area, $transport, $count, $fee, $start_hour,$start_min, $end_hour,$end_min) {
+        DB::transaction(function () use ($post,$decodedImage, $id, $message, $area, $transport, $count, $fee, $start_hour,$start_min, $end_hour,$end_min) {
             
             $id = Str::uuid();
             //new uuid
             $file = $id->toString();
-            $post = Post::find($id);
+            // $post = Post::find($id);
             $s3Id = $post->img_path;
+
             Storage::disk('s3')->delete('post/'.$s3Id);
             // S3 post/aaa.jpg
             $isSuccess = Storage::disk('s3')->put('post/'.$file, $decodedImage);
