@@ -25,7 +25,7 @@ class PostStoreRequest extends FormRequest
     {
         return [
             'image' => 'required',
-            'message' => 'required',
+            'message' => 'nullable',
             'area' => 'required|string',
             'transport' => 'required|integer',
             'count' => 'required|integer',
