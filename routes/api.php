@@ -12,5 +12,6 @@ Route::group(['prefix'=>'posts'],function(){
     Route::get('/','PostController@index');
     Route::get('/{id}','PostController@show');
     Route::put('/{id}','PostController@update')->middleware('auth:api');
+    Route::delete('/{id}','PostController@destroy')->middleware('auth:api');
 
 });
