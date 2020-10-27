@@ -69,4 +69,58 @@ class PostController extends Controller
         $posts = Post::latestFirst()->paginate(5);
         return PostResourse::collection($posts);
     }
+    public function show(Request $request) {
+		return new PostResourse(Post::find($request->id));
+    }
+
+    public function update(PostStoreRequest $request){
+        //get all
+        $params = $request->json()->all();
+
+        //image
+        list(, $image) = explode(';', $params['image']);
+        list(, $image) = explode(',', $image);
+        $decodedImage = base64_decode($image);
+
+        $id = $request->id;
+        $message = $params['message'];
+        $area = $params['area'];
+        $transport = $params['transport'];
+        $count = $params['count'];
+        $fee = $params['fee'];
+        $start_hour = $params['start_hour'];
+        $start_min = $params['start_min'];
+        $end_hour = $params['end_hour'];
+        $end_min = $params['end_min'];
+
+        DB::transaction(function () use ($decodedImage, $id, $message, $area, $transport, $count, $fee, $start_hour,$start_min, $end_hour,$end_min) {
+            
+            $id = Str::uuid();
+            //new uuid
+            $file = $id->toString();
+            $post = Post::find($id);
+            $s3Id = $post->img_path;
+            Storage::disk('s3')->delete('post/'.$s3Id);
+            // S3 post/aaa.jpg
+            $isSuccess = Storage::disk('s3')->put('post/'.$file, $decodedImage);
+            if (!$isSuccess) {
+                throw new Exception('ファイルのアップでエラー');
+            }
+            Storage::disk('s3')->setVisibility('post/'.$file,'public');
+
+            $post->img_path = $file;
+            $post->area = $area;
+            $post->fee = $fee;
+            $post->message = $message;
+            $post->count = $count;
+            $post->transport = $transport;
+            $post->start_hour = $start_hour;
+            $post->start_min = $start_min;
+            $post->end_hour = $end_hour;
+            $post->end_min = $end_min;
+
+            $post->save();
+        });
+        return response('success');
+    }
 }
