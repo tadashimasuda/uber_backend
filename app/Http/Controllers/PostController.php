@@ -9,9 +9,17 @@ use Str;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PostStoreRequest;
 use App\Http\Resources\Post as PostResourse;
+use App\Http\Resources\PostShow as PostShowResourse;
 
 class PostController extends Controller
 {
+    public function top()
+    {
+        $feeRank=Post::select(DB::raw('user_id,SUM(fee) as total_fee,name'))->join('users','users.id','=','posts.user_id')->groupBy('user_id')->get();
+        $posts = Post::latestFirst()->take(3)->get();
+        return response()->json(['feeRank'=>$feeRank,'posts'=>$posts]);
+        // return PostResourse::collection($posts);
+    }
     public function store(PostStoreRequest $request)
     {
         //get all
@@ -69,8 +77,9 @@ class PostController extends Controller
         $posts = Post::latestFirst()->paginate(5);
         return PostResourse::collection($posts);
     }
+
     public function show(Request $request) {
-		return new PostResourse(Post::find($request->id));
+		return new PostShowResourse(Post::find($request->id));
     }
 
     public function update(PostStoreRequest $request){

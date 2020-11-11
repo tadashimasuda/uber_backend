@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Requests;
-
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRegisterRequest extends FormRequest
+class UserEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,11 @@ class UserRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'email|required|unique:users,email',
+            'email' => ['email','required', Rule::unique('users')->ignore($this->user()->id)],
             'name' => 'required',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|confirmed',
             'twitter_id' => 'nullable',
-            'img_path' => 'nullable',
+            'image' => 'nullable|string',
             'transport' => 'required|integer' 
         ];
     }
