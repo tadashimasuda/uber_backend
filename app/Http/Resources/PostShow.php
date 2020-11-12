@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Comment as CommentResorse;
+use App\Http\Resources\User as UserResorse;
+
 
 class PostShow extends JsonResource
 {
@@ -22,7 +24,9 @@ class PostShow extends JsonResource
                 'img_path' => $this->img_path,
                 'message' => $this->message,
                 'created_at' => $this->created_at->format('Y年m月d日'),
+                'like_count' => $this->likes->count(),
             ],
+            'likes_user_id'=> $this->likes->pluck('user_id'),
             'user' =>[
                 'user_id'=>$this->user->id,
                 'username'=>$this->user->name,
