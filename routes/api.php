@@ -12,7 +12,6 @@ Route::get('/user/{id}','UserController@show');
 
 Route::get('/users','UserController@index');
 
-
 Route::group(['prefix'=>'posts'],function(){
     Route::post('/','PostController@store')->middleware('auth:api');
     // Route::get('/','PostController@index');
@@ -24,5 +23,8 @@ Route::group(['prefix'=>'posts'],function(){
     Route::group(['prefix'=>'/{id}/comment'],function(){
         Route::post('/','CommentController@store')->middleware('auth:api');
         // Route::delete('/{id}','CommentController@destroy')->middleware('auth:api');
+    });
+    Route::group(['prefix'=>'/{id}/likes'],function(){
+        Route::post('/','PostLikeController@store')->middleware('auth:api');
     });
 });

@@ -37,14 +37,18 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function ownsPost(Post $post)
-    {
-        return $this->id ===$post->user->id;
+    public function ownsPost(Post $post){
+        return $this->id === $post->user->id;
     }
-
+    
     public function post()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function hasLikedPost(Post $post)
+    {
+        return $post->likes->where('user_id',$this->id)->count() === 1;
     }
 
     public function getJWTIdentifier()

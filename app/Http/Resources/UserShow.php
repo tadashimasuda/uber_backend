@@ -25,11 +25,6 @@ class UserShow extends JsonResource
             'transport' => $this->transport,
             'created_at' => $this->created_at->format('Y年m月d日'),
             'posts' => $this->post,
-            // 'posts' =>[
-            //     'id'=>$this->post->id,
-            //     'img_path'=>$this->post->img_path,
-            //     'created_at'=>$this->post->created_at->format('Y年m月d日'),
-            // ],
             'chartData' =>[
                 'fee'=>$this->post()->LatestFirst()->limit(5)->pluck('fee')->toArray(),
                 'created_at'=>$this->post()->LatestFirst()->limit(5)->pluck('created_at')->toArray(),
