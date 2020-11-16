@@ -39,7 +39,7 @@ class AuthController extends Controller
         if(!$token = auth()->attempt($request->only(['email','password']))){
             return response()->json([
                 'errors' =>[
-                    'email'=>['一致しませんでした。']
+                    'email'=>['メールアドレスとパスワードが一致しませんでした。']
                 ]
             ],422);
         }

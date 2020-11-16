@@ -22,15 +22,16 @@ class PostShow extends JsonResource
             'post' =>[
                 'id' => $this->id,
                 'img_path' => $this->img_path,
+                'area' => $this->area,
                 'message' => $this->message,
                 'created_at' => $this->created_at->format('Y年m月d日'),
                 'like_count' => $this->likes->count(),
             ],
             'likes_user_id'=> $this->likes->pluck('user_id'),
             'user' =>[
-                'user_id'=>$this->user->id,
-                'username'=>$this->user->name,
-                'user_img_path'=>$this->user->img_path,
+                'id'=>$this->user->id,
+                'name'=>$this->user->name,
+                'img_path'=>$this->user->img_path,
             ],
             'comments' => CommentResorse::collection($this->comment),
         ];

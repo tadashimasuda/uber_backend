@@ -15,10 +15,9 @@ class PostController extends Controller
 {
     public function top()
     {
-        $feeRank=Post::select(DB::raw('user_id,SUM(fee) as total_fee,name'))->join('users','users.id','=','posts.user_id')->groupBy('user_id')->get();
+        $feeRank=Post::select(DB::raw('user_id,SUM(fee) as total_fee,name'))->join('users','users.id','=','posts.user_id')->groupBy('user_id')->orderBy('total_fee','desc')->get();
         $posts = Post::latestFirst()->take(3)->get();
         return response()->json(['feeRank'=>$feeRank,'posts'=>$posts]);
-        // return PostResourse::collection($posts);
     }
     public function store(PostStoreRequest $request)
     {
@@ -30,7 +29,6 @@ class PostController extends Controller
         list(, $image) = explode(',', $image);
         $decodedImage = base64_decode($image);
 
-        // $user_id = $params['user_id'];
         $user_id = $request->user()->id;
         $message = $params['message'];
         $area = $params['area'];
@@ -74,67 +72,12 @@ class PostController extends Controller
     } 
     public function index()
     {
-        $posts = Post::latestFirst()->paginate(5);
+        $posts = Post::latestFirst()->paginate(8);
         return PostResourse::collection($posts);
     }
 
     public function show(Request $request) {
 		return new PostShowResourse(Post::find($request->id));
-    }
-
-    public function update(PostStoreRequest $request){
-        $post = Post::find($request->id);
-        $this->authorize('update',$post);
-
-        //get all
-        $params = $request->json()->all();
-
-        //image
-        list(, $image) = explode(';', $params['image']);
-        list(, $image) = explode(',', $image);
-        $decodedImage = base64_decode($image);
-
-        $id = $request->id;
-        $message = $params['message'];
-        $area = $params['area'];
-        $transport = $params['transport'];
-        $count = $params['count'];
-        $fee = $params['fee'];
-        $start_hour = $params['start_hour'];
-        $start_min = $params['start_min'];
-        $end_hour = $params['end_hour'];
-        $end_min = $params['end_min'];
-
-        DB::transaction(function () use ($post,$decodedImage, $id, $message, $area, $transport, $count, $fee, $start_hour,$start_min, $end_hour,$end_min) {
-            
-            $id = Str::uuid();
-            //new uuid
-            $file = $id->toString();
-            // $post = Post::find($id);
-            $s3Id = $post->img_path;
-
-            Storage::disk('s3')->delete('post/'.$s3Id);
-            // S3 post/aaa.jpg
-            $isSuccess = Storage::disk('s3')->put('post/'.$file, $decodedImage);
-            if (!$isSuccess) {
-                throw new Exception('ファイルのアップでエラー');
-            }
-            Storage::disk('s3')->setVisibility('post/'.$file,'public');
-
-            $post->img_path = $file;
-            $post->area = $area;
-            $post->fee = $fee;
-            $post->message = $message;
-            $post->count = $count;
-            $post->transport = $transport;
-            $post->start_hour = $start_hour;
-            $post->start_min = $start_min;
-            $post->end_hour = $end_hour;
-            $post->end_min = $end_min;
-
-            $post->save();
-        });
-        return response(null,204);
     }
 
     public function destroy(Post $post,Request $request){

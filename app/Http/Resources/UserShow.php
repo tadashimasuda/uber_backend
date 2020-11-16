@@ -17,15 +17,17 @@ class UserShow extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'id' =>$this->id,
-            'name' => $this->name,
-            'profile' => $this->profile,
-            'twitter_id' => $this->twitter_id,
-            'img_path' => $this->img_path,
-            'transport' => $this->transport,
-            'created_at' => $this->created_at->format('Y年m月d日'),
-            'posts' => $this->post,
+            'user' => [
+                'id' =>$this->id,
+                'name' => $this->name,
+                'profile' => $this->profile,
+                'twitter_id' => $this->twitter_id,
+                'img_path' => $this->img_path,
+                'transport' => $this->transport,
+            ],
+            'posts' => $this->post()->LatestFirst()->get(),
             'chartData' =>[
+                'total_fee' =>$this->post()->sum("fee"),
                 'fee'=>$this->post()->LatestFirst()->limit(5)->pluck('fee')->toArray(),
                 'created_at'=>$this->post()->LatestFirst()->limit(5)->pluck('created_at')->toArray(),
             ]
