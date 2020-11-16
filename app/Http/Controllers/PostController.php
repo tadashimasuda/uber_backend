@@ -15,9 +15,15 @@ class PostController extends Controller
 {
     public function top()
     {
-        $feeRank=Post::select(DB::raw('user_id,SUM(fee) as total_fee,name'))->join('users','users.id','=','posts.user_id')->groupBy('user_id')->orderBy('total_fee','desc')->get();
-        $posts = Post::latestFirst()->take(3)->get();
-        return response()->json(['feeRank'=>$feeRank,'posts'=>$posts]);
+        try{
+            $feeRank=Post::select(DB::raw('user_id,SUM(fee) as total_fee,name'))->join('users','users.id','=','posts.user_id')->groupBy('user_id')->orderBy('total_fee','desc')->get();
+            $posts = Post::latestFirst()->take(3)->get();
+            return response()->json(['feeRank'=>$feeRank,'posts'=>$posts]);
+        }catch ( Exception $ex ){
+            // LogUtil::logError ( Const::DEF_LOG_DATABASE, $ex->getMessage () );
+            return response()->json($ex->getMessage ());
+        }
+        
     }
     public function store(PostStoreRequest $request)
     {
