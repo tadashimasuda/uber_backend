@@ -31,7 +31,7 @@ return [
     /*
      * Matches the request origin. `['*']` allows all origins. Wildcards can be used, eg `*.mydomain.com`
      */
-    'allowed_origins' => ['https://uber-post.netlify.app'],
+    'allowed_origins' => ['https://uber-post.netlify.app','http://localhost:3000'],
 
     /*
      * Patterns that can be used with `preg_match` to match the origin.
