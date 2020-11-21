@@ -31,7 +31,7 @@ return [
     /*
      * Matches the request origin. `['*']` allows all origins. Wildcards can be used, eg `*.mydomain.com`
      */
-    'allowed_origins' => ['https://uber-post.netlify.app','http://localhost:3000'],
+    'allowed_origins' => ['https://uber-post.netlify.app'],
 
     /*
      * Patterns that can be used with `preg_match` to match the origin.
@@ -41,7 +41,7 @@ return [
     /*
      * Sets the Access-Control-Allow-Headers response header. `['*']` allows all headers.
      */
-    'allowed_headers' => ['Content-Type, Authorization, Accept'],
+    'allowed_headers' => ['Content-Type,application/json','Authorization','Accept'],
 
     /*
      * Sets the Access-Control-Expose-Headers response header with these headers.
