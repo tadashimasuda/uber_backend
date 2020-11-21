@@ -41,7 +41,7 @@ return [
     /*
      * Sets the Access-Control-Allow-Headers response header. `['*']` allows all headers.
      */
-    'allowed_headers' => ['Content-Type,application/json','Authorization','Accept'],
+    'allowed_headers' => ['Content-Type','application/json','Authorization','Accept'],
 
     /*
      * Sets the Access-Control-Expose-Headers response header with these headers.
