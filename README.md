@@ -32,13 +32,16 @@ Uber配達員の配達報告・管理サービス
 - ページネーション
 - ユーザーランキング表示（報酬額順）
 
+- 生成される画像イメージ(投稿機能)
+<img src="https://uber-s3.s3-ap-northeast-1.amazonaws.com/post/13e343b9-fdc8-4f52-a6cf-d6bc2798e891" width="50%" height="50%">
+
 ## 使用した言語、技術、サービス
 - 言語
     - Frontend : Nuxt.js
     - Backend : Laravel
 
 - DB
-    -Mysql
+    - Mysql
 
 - 技術
     - 認証周り
