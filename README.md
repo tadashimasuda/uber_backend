@@ -5,7 +5,8 @@ Frontend( [github]:https://github.com/tadashimasuda/uber_frontend )
 ## 作った理由
     自分自身のuber配達経験とTwitterで配達履歴を報告するユーザーが多数見かけられたので制作。Uber配達は収入増加のため効率よく回りたいのでそれなりの情報がほしい。よって、情報共有可能なサービスを制作。
 
-## アプリ概要 (URL:[ https://uber-post.netlify.app],DBサーバーの関係によりデータが上手く表示されないときがあります。各ページは下記に記載してあります。)
+## アプリ概要 (URL:[ https://uber-post.netlify.app])
+※　DBサーバーの関係によりデータが上手く表示されないときがあります。各ページは下記に記載してあります。
 Uber配達員の配達報告・管理サービス
 1. ユーザーがアプリにアクセス
 2. NuxtからLaravelのAPIを実行
